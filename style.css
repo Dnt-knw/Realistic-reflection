@@ -202,7 +202,7 @@ body {
   }
 }
 
-@media all and (max-width: 768px) {
+@media screen and (max-width: 768px) {
   #resolution-select-text {
     font-size: 16px;
   }
@@ -222,7 +222,7 @@ body {
   }
 }
 
-@media all and (max-width: 445px) {
+@media screen and (max-width: 445px) {
   #resolution-select-text {
     font-size: 13px;
   }
@@ -244,7 +244,7 @@ body {
   }
 }
 
-@media all and (max-width: 365px) {
+@media screen and (max-width: 365px) {
   #backgroundInfo {
     font-size: 10px;
     width: 160px;

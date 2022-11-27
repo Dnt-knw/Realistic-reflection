@@ -137,10 +137,10 @@
       			loadingCircles.forEach(c => setTimeout(() => c.classList.add('run-loading-animation'), ms += 200));
 
       			if (e.target.textContent in urls) {
-      				setupScene(resolution.includes('2048') && resolution.includes('1024') ? urls[`${e.target.textContent}`][0] : urls[`${e.target.textContent}`][1]);
+      				setupScene(resolution.includes('1024') ? urls[`${e.target.textContent}`][0] : urls[`${e.target.textContent}`][1]);
       				backgroundInfo.textContent = `${e.target.textContent} ${resolution}`;
       			} else {
-      				setupScene(resolution.includes('2048') && resolution.includes('1024') ? urls[`${backgroundNames[n]}`][0] : urls[`${backgroundNames[n]}`][1]);
+      				setupScene(resolution.includes('1024') ? urls[`${backgroundNames[n]}`][0] : urls[`${backgroundNames[n]}`][1]);
       				backgroundInfo.textContent = `${backgroundNames[n]} ${resolution}`;
       			}
       		};
@@ -192,6 +192,7 @@
       	};
 
       	const meshes = [];
+        const cubeCameras = [];
       	const scene = new THREE.Scene();
 
       	let cb = null;
@@ -200,7 +201,7 @@
       		new THREE.TextureLoader().load(url, texture => {
       			texture.encoding = THREE.sRGBEncoding;
       			texture.mapping = THREE.EquirectangularReflectionMapping;
-      			texture.anisotropy = resolution.includes('2048') && resolution.includes('1024') ? 1 : renderer.capabilities.getMaxAnisotropy();
+      			texture.anisotropy = resolution.includes('1024') ? 4 : renderer.capabilities.getMaxAnisotropy();
       			scene.background = texture;
 
       			cb = makeCubeRenderTarget();
@@ -238,7 +239,7 @@
       	controls.dampingFactor = .1;
 
       	const makeCubeRenderTarget = () => {
-      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('2048') && resolution.includes('1024') ? 64 : 256, {
+      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('1024') ? 64 : 256, {
       			format: THREE.RGBFormat,
       			generateMipmaps: true,
       			minFilter: THREE.NearestFilter,
@@ -247,13 +248,7 @@
 
       		cubeRenderTarget.texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
       		const cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
-
-      		const update = () => {
-      			cubeCamera.update(renderer, scene);
-      			requestAnimationFrame(update);
-      		}
-
-      		update();
+          cubeCameras.push(cubeCamera);
 
       		return cubeRenderTarget;
       	}
@@ -263,22 +258,16 @@
       		if (isCube) {
       			cubeRenderTarget = cb;
       		} else {
-      			cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('2048') && resolution.includes('1024') ? 256 : 1024, {
+      			cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('1024') ? 256 : 1024, {
       				format: THREE.RGBFormat,
       				generateMipmaps: true,
-      				minFilter: resolution.includes('2048') && resolution.includes('1024') ? THREE.NearestFilter : THREE.LinearMipMapLinearFilter,
+      				minFilter: resolution.includes('1024') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
       				encoding: THREE.sRGBEncoding,
       			});
 
       			cubeRenderTarget.texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
       			const cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
-
-      			const update = () => {
-      				cubeCamera.update(renderer, scene);
-      				requestAnimationFrame(update);
-      			}
-
-      			update();
+            cubeCameras.push(cubeCamera);
       		}
 
       		const material = new THREE.MeshBasicMaterial({
@@ -319,6 +308,8 @@
       			mesh.position.x = Math.tan(time * 0.0012 + a) * 45;
       			a += 10;
       		});
+
+          cubeCameras.forEach(camera => camera.update(renderer, scene));
 
       		stats.update();
       		controls.update();
