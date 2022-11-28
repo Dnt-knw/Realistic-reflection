@@ -192,10 +192,8 @@
       	};
 
       	const meshes = [];
-        const cubeCameras = [];
+        let cubeCamera = null;
       	const scene = new THREE.Scene();
-
-      	let cb = null;
 
       	const setupScene = url => {
       		new THREE.TextureLoader().load(url, texture => {
@@ -204,28 +202,29 @@
       			texture.anisotropy = resolution.includes('1024') ? 4 : renderer.capabilities.getMaxAnisotropy();
       			scene.background = texture;
 
-      			cb = makeCubeRenderTarget();
+            const target1 = makeCubeRenderTarget(2, false);
+            const target2 = makeCubeRenderTarget(1000, true);
 
       			setTimeout(() => {
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 100);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, -100);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 100);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, -100);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 0);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 0);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, 100);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, -100);
-      				makeMesh(new THREE.IcosahedronGeometry(50, 12), 0, 0, 0, false, false);
-      			}, 250)
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 100, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, -100, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 100, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, -100, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 0, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 0, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, 100, true, target1);
+      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, -100, true, target1);
+      				makeMesh(new THREE.IcosahedronGeometry(50, 12), 0, 0, 0, false, target2);
+      			}, 300)
 
-      			setTimeout(render, 500);
+      			setTimeout(render, 600);
 
-      			setTimeout(() => mainContainer.style.opacity = '0', 800);
+      			setTimeout(() => mainContainer.style.opacity = '0', 1000);
       			setTimeout(() => {
       				mainContainer.style.display = 'none';
       				stats = new Stats();
       				statsInfo.append(stats.dom);
-      			}, 1900);
+      			}, 2100);
       		});
       	};
 
@@ -238,38 +237,26 @@
       	controls.enableDamping = true;
       	controls.dampingFactor = .1;
 
-      	const makeCubeRenderTarget = () => {
-      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('1024') ? 64 : 256, {
+      	const makeCubeRenderTarget = (far, updateNeeded) => {
+      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('1024') ? 256 : 1024, {
       			format: THREE.RGBFormat,
       			generateMipmaps: true,
-      			minFilter: THREE.NearestFilter,
+      			minFilter: resolution.includes('1024') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
       			encoding: THREE.sRGBEncoding,
       		});
 
-      		cubeRenderTarget.texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-      		const cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
-          cubeCameras.push(cubeCamera);
+      		cubeRenderTarget.texture.anisotropy = resolution.includes('1024') ? 4 : renderer.capabilities.getMaxAnisotropy();
+      		const camera = new THREE.CubeCamera(1, far, cubeRenderTarget);
+          if (updateNeeded) {
+            cubeCamera = camera;
+          } else {
+            setTimeout(() => camera.update(renderer, scene), 150);
+          }
 
       		return cubeRenderTarget;
       	}
 
-      	const makeMesh = (geo, x = 0, y = 0, z = 0, addToArray = true, isCube = true) => {
-      		let cubeRenderTarget = null;
-      		if (isCube) {
-      			cubeRenderTarget = cb;
-      		} else {
-      			cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('1024') ? 256 : 1024, {
-      				format: THREE.RGBFormat,
-      				generateMipmaps: true,
-      				minFilter: resolution.includes('1024') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
-      				encoding: THREE.sRGBEncoding,
-      			});
-
-      			cubeRenderTarget.texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-      			const cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
-            cubeCameras.push(cubeCamera);
-      		}
-
+      	const makeMesh = (geo, x = 0, y = 0, z = 0, addToArray, cubeRenderTarget) => {
       		const material = new THREE.MeshBasicMaterial({
       			envMap: cubeRenderTarget.texture,
       			combine: THREE.MultiplyOperation,
@@ -309,7 +296,7 @@
       			a += 10;
       		});
 
-          cubeCameras.forEach(camera => camera.update(renderer, scene));
+          cubeCamera.update(renderer, scene);
 
       		stats.update();
       		controls.update();
