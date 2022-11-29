@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="style.css" />
 
     <!--
-      First, choose background resolution. I recommend you 4K, if it won't work or is very slow,
-      then you can choose 2K background (Also, reflection at 2k background resolution is worse,
+      First, choose background resolution. I recommend you 8K, if it won't work or is very slow,
+      then you can choose 4K background (Also, reflection at 4k background resolution is worse,
       this should help people with weak devices). Then choose a background
       (you can scroll background selection container), if you don't know which to choose,
       you can use the "random background" button. Also, if you get a ProgressEvent error, let me know!
@@ -49,10 +49,10 @@
       <div id="select-resolution-container">
         <p id="resolution-select-text">Select background resolution</p>
         <div class="low-resolution resolution-selection-button">
-          2048&times;1024
+          <span>4096&times;2048</span> ~1-2MB
         </div>
         <div class="high-resolution resolution-selection-button">
-          4096&times;2048
+          <span>8192&times;4096</span> ~3-5MB
         </div>
       </div>
       <div id="loading-container">
@@ -66,23 +66,18 @@
         <div class="background-selection-button">ballroom</div>
         <div class="background-selection-button">blaubeuren_church_square</div>
         <div class="background-selection-button">kloppenheim</div>
-        <div class="background-selection-button">lythwood_field</div>
-        <div class="background-selection-button">misty_pines</div>
         <div class="background-selection-button">modern_buildings_night</div>
-        <div class="background-selection-button">portland</div>
+        <div class="background-selection-button">portland_landing_pad</div>
         <div class="background-selection-button">rathaus</div>
-        <div class="background-selection-button">shanghai</div>
-        <div class="background-selection-button">tiergarten</div>
-        <div class="background-selection-button">umhlanga_sunrise</div>
-        <div class="background-selection-button">warehouse_with_lights</div>
+        <div class="background-selection-button">white_cliff_top</div>
+        <div class="background-selection-button">spiaggia_di_mondello</div>
+        <div class="background-selection-button">blue_lagoon_night</div>
         <div class="background-selection-button">lythwood_terrace</div>
-        <div class="background-selection-button">outdoor_umbrellas</div>
         <div class="background-selection-button">glass_passage</div>
-        <div class="background-selection-button">theater</div>
         <div class="background-selection-button">adams_place_bridge</div>
-        <div class="background-selection-button">vatican_road</div>
-        <div class="background-selection-button">mpumalanga_veld</div>
-        <div class="background-selection-button">mosaic_tunnel</div>
+        <div class="background-selection-button">hilly_terrain</div>
+        <div class="background-selection-button">rooftop_night</div>
+        <div class="background-selection-button">vignaioli_night</div>
         <div class="background-selection-button">random background</div>
       </div>
     </div>
@@ -108,25 +103,28 @@
 
       	resolutionSelectionButtons.forEach(button => {
       		button.onclick = e => {
-      			resolution = e.target.textContent;
+      			resolution = e.currentTarget.children[0].textContent;
       			selectResolutionContainer.style.display = 'none';
       			backgroundSelectionContainer.style.display = 'block';
       		};
       	});
 
-      	const backgroundNames = ['ballroom', 'blaubeuren_church_square', 'kloppenheim', 'lythwood_field', 'misty_pines',
-      		'modern_buildings_night', 'portland', 'rathaus', 'shanghai', 'tiergarten',
-      		'umhlanga_sunrise', 'warehouse_with_lights', 'lythwood_terrace', 'outdoor_umbrellas', 'glass_passage',
-      		'theater', 'adams_place_bridge', 'vatican_road', 'mpumalanga_veld', 'mosaic_tunnel'
+      	const backgroundNames = ['ballroom', 'blaubeuren_church_square', 'kloppenheim',
+      		'modern_buildings_night', 'portland_landing_pad', 'rathaus', 'white_cliff_top',
+      		'spiaggia_di_mondello', 'blue_lagoon_night', 'lythwood_terrace', 'glass_passage', 
+          'adams_place_bridge', 'hilly_terrain', 'rooftop_night', 'vignaioli_night',
       	];
+
+        const authors = ['Sergej Majboroda', 'Andreas Mischok', 'Greg Zaal', 'Greg Zaal', 'Philip Modin', 'Greg Zaal', 'Greg Zaal',
+        'Andreas Mischok', 'Greg Zaal', 'Greg Zaal', 'Greg Zaal', 'Andreas Mischok', 'Sergej Majboroda', 'Greg Zaal', 'Greg Zaal'];
 
       	let counter = 0,
       		n;
 
       	const timer = setInterval(() => {
-      		counter === 10 ? clearInterval(timer) : counter++;
+      		counter === 20 ? clearInterval(timer) : counter++;
       		n = Math.floor(Math.random() * backgroundNames.length);
-      	}, 0);
+      	}, 20);
 
       	backgroundSelectionButton.forEach(button => {
       		button.onclick = e => {
@@ -136,12 +134,12 @@
       			let ms = 0;
       			loadingCircles.forEach(c => setTimeout(() => c.classList.add('run-loading-animation'), ms += 200));
 
-      			if (e.target.textContent in urls) {
-      				setupScene(resolution.includes('1024') ? urls[`${e.target.textContent}`][0] : urls[`${e.target.textContent}`][1]);
-      				backgroundInfo.textContent = `${e.target.textContent} ${resolution}`;
+      			if (e.currentTarget.textContent in urls) {
+      				setupScene(resolution.includes('2048') ? urls[`${e.currentTarget.textContent}`][0] : urls[`${e.currentTarget.textContent}`][1]);
+      				backgroundInfo.textContent = `${e.currentTarget.textContent} by ${authors[backgroundNames.findIndex(item => item === e.currentTarget.textContent)]} ${resolution}`;
       			} else {
-      				setupScene(resolution.includes('1024') ? urls[`${backgroundNames[n]}`][0] : urls[`${backgroundNames[n]}`][1]);
-      				backgroundInfo.textContent = `${backgroundNames[n]} ${resolution}`;
+      				setupScene(resolution.includes('2048') ? urls[`${backgroundNames[n]}`][0] : urls[`${backgroundNames[n]}`][1]);
+      				backgroundInfo.textContent = `${backgroundNames[n]} by ${authors[n]} ${resolution}`;
       			}
       		};
       	});
@@ -169,26 +167,21 @@
       	camera.position.set(0, 0, 100);
 
       	const urls = {
-      		ballroom: ['https://dl.dropbox.com/s/hy4u7dr10dyime5/ballroom_2K.jpg', 'https://dl.dropbox.com/s/ztcsftba02ljzsx/ballroom_4K.jpg'],
-      		blaubeuren_church_square: ['https://dl.dropbox.com/s/ejf1kvap9gqyykf/blaubeuren_church_square_2K.jpg', 'https://dl.dropbox.com/s/9rql62afe3ck7oo/blaubeuren_church_square_4K.jpg'],
-      		kloppenheim: ['https://dl.dropbox.com/s/pkurscge7a6m5cr/kloppenheim_02_2K.jpg', 'https://dl.dropbox.com/s/i8o04okj625hc1o/kloppenheim_02_4K.jpg'],
-      		lythwood_field: ['https://dl.dropbox.com/s/412gihhvldpk0h2/lythwood_field_2K.jpg', 'https://dl.dropbox.com/s/gkb1ihft4xii11n/lythwood_field_4K.jpg'],
-      		misty_pines: ['https://dl.dropbox.com/s/qhpjaoyh0wfxv94/misty_pines_2K.jpg', 'https://dl.dropbox.com/s/250d1r0veon3wky/misty_pines_4K.jpg'],
-      		modern_buildings_night: ['https://dl.dropbox.com/s/iy13jmz5wkeg8ou/modern_buildings_night_2K.jpg', 'https://dl.dropbox.com/s/upsagn957nio5h4/modern_buildings_night_4K.jpg'],
-      		portland: ['https://dl.dropbox.com/s/5zoh30x2tffaubi/portland_landing_pad_2K.jpg', 'https://dl.dropbox.com/s/wlthubb3vcu9qli/portland_landing_pad_4K.jpg'],
-      		rathaus: ['https://dl.dropbox.com/s/r1kol5qgzercuiw/rathaus_2K.jpg', 'https://dl.dropbox.com/s/wnz2p0ldnl8uhpg/rathaus_4K.jpg'],
-      		shanghai: ['https://dl.dropbox.com/s/mgi2lelqgqj1ath/shanghai_2K.jpg', 'https://dl.dropbox.com/s/wqwhzuse8aujmz5/shanghai_4K.jpg'],
-      		tiergarten: ['https://dl.dropbox.com/s/fa5by4pv1so7ylb/tiergarten_2K.jpg', 'https://dl.dropbox.com/s/iesmth183hkothg/tiergarten_4K.jpg'],
-      		umhlanga_sunrise: ['https://dl.dropbox.com/s/6oxqqywgq1av7ri/umhlanga_sunrise_2K.jpg', 'https://dl.dropbox.com/s/lh68fwphjvwlv3p/umhlanga_sunrise_4K.jpg'],
-      		warehouse_with_lights: ['https://dl.dropbox.com/s/mmuyxpenkato5y6/warehouse_with_lights_2K.jpg', 'https://dl.dropbox.com/s/da2eo8qhm4o4o3c/warehouse_with_lights_4K.jpg'],
-      		lythwood_terrace: ['https://dl.dropbox.com/s/ojwbe326jzanwk7/lythwood_terrace_2K.jpg', 'https://dl.dropbox.com/s/kbhxb8qfaz9qkfi/lythwood_terrace_4K.jpg'],
-      		outdoor_umbrellas: ['https://dl.dropbox.com/s/stn64z5lj3mudzy/outdoor_umbrellas_2K.jpg', 'https://dl.dropbox.com/s/zray1f94bw29lgi/outdoor_umbrellas_4K.jpg'],
-      		glass_passage: ['https://dl.dropbox.com/s/olph83dz8kwlk1l/glass_passage_2K.jpg', 'https://dl.dropbox.com/s/v9otisxpv65djgv/glass_passage_4K.jpg'],
-      		theater: ['https://dl.dropbox.com/s/o3df58iaus9pxrb/theater_2K.jpg', 'https://dl.dropbox.com/s/kfpn23yfepvtuah/theater_4K.jpg'],
-      		adams_place_bridge: ['https://dl.dropbox.com/s/m35no2hp6ozs23g/adams_place_bridge_2K.jpg', 'https://dl.dropbox.com/s/cx1pdo49gfviojw/adams_place_bridge_4K.jpg'],
-      		vatican_road: ['https://dl.dropbox.com/s/c3p5fo4y135m2lq/vatican_road_2K.jpg', 'https://dl.dropbox.com/s/m02utqismgt9chl/vatican_road_4K.jpg'],
-      		mpumalanga_veld: ['https://dl.dropbox.com/s/jbkuvoo5c9e8rrh/mpumalanga_veld_2K.jpg', 'https://dl.dropbox.com/s/q82zjj8qcpuh10j/mpumalanga_veld_4K.jpg'],
-      		mosaic_tunnel: ['https://dl.dropbox.com/s/077yucg10cn2req/mosaic_tunnel_2K.jpg', 'https://dl.dropbox.com/s/7reoqwi6k7vyf65/mosaic_tunnel_4K.jpg'],
+      		ballroom: ['https://dl.dropbox.com/s/uwqtvo75ewpm2o4/ballroom_4K.jpg', 'https://dl.dropbox.com/s/f0zj9xig0oispww/ballroom_8K.jpg'],
+      		blaubeuren_church_square: ['https://dl.dropbox.com/s/anzcczaj23cka3v/blaubeuren_church_square_4K.jpg', 'https://dl.dropbox.com/s/quqwigajksl6gmt/blaubeuren_church_square_8K.jpg'],
+      		kloppenheim: ['https://dl.dropbox.com/s/7x1ge3m1zw0jgxz/kloppenheim_02_4K.jpg', 'https://dl.dropbox.com/s/e9nxwdpcwxuah7j/kloppenheim_02_8K.jpg'],
+      		modern_buildings_night: ['https://dl.dropbox.com/s/phpo7m9loko7lat/modern_buildings_night_4K.jpg', 'https://dl.dropbox.com/s/lm0udknkj4xtowb/modern_buildings_night_8K.jpg'],
+      		portland_landing_pad: ['https://dl.dropbox.com/s/3cy8bw2gp8w36au/portland_landing_pad_4K.jpg', 'https://dl.dropbox.com/s/2pu25vjdi2374nz/portland_landing_pad_8K.jpg'],
+      		rathaus: ['https://dl.dropbox.com/s/8jm0tam0amtah0g/rathaus_4K.jpg', 'https://dl.dropbox.com/s/csfnw7zu0t3nb2y/rathaus_8K.jpg'],
+      		white_cliff_top: ['https://dl.dropbox.com/s/12lrwjhsv2vt9c2/white_cliff_top_4K.jpg', 'https://dl.dropbox.com/s/dt93b44c94w0ro6/white_cliff_top_8K.jpg'],
+      		spiaggia_di_mondello: ['https://dl.dropbox.com/s/61bsf6aenulcmc9/spiaggia_di_mondello_4K.jpg', 'https://dl.dropbox.com/s/up49k2pkxbnvkdi/spiaggia_di_mondello_8K.jpg'],
+      		blue_lagoon_night: ['https://dl.dropbox.com/s/f0df1ph7mqf2ns0/blue_lagoon_night_4K.jpg', 'https://dl.dropbox.com/s/h0r0y3kr5iubxbi/blue_lagoon_night_8K.jpg'],
+      		lythwood_terrace: ['https://dl.dropbox.com/s/g7u6fr5me1pdwb5/lythwood_terrace_4K.jpg', 'https://dl.dropbox.com/s/hcclrbilfkpoz2t/lythwood_terrace_8K.jpg'],
+      		glass_passage: ['https://dl.dropbox.com/s/th8f1gxjitw7kzf/glass_passage_4K.jpg', 'https://dl.dropbox.com/s/nq55pbvm962llgq/glass_passage_8K.jpg'],
+      		adams_place_bridge: ['https://dl.dropbox.com/s/4ezg3iicbhqnyqu/adams_place_bridge_4K.jpg', 'https://dl.dropbox.com/s/jdpg4usepmpud89/adams_place_bridge_8K.jpg'],
+      		hilly_terrain: ['https://dl.dropbox.com/s/86l7coqrrpy2thn/hilly_terrain_01_4K.jpg', 'https://dl.dropbox.com/s/j6lcu6a3a3kh5i5/hilly_terrain_01_8K.jpg'],
+          rooftop_night: ['https://dl.dropbox.com/s/nt7iuz4fyoogvic/rooftop_night_4K.jpg', 'https://dl.dropbox.com/s/dwqac68wx49w0fq/rooftop_night_8K.jpg'],
+          vignaioli_night: ['https://dl.dropbox.com/s/et62qyaq54gh5o0/vignaioli_night_4K.jpg', 'https://dl.dropbox.com/s/rxw0c6t76agjlnk/vignaioli_night_8K.jpg'],
       	};
 
       	const meshes = [];
@@ -199,7 +192,7 @@
       		new THREE.TextureLoader().load(url, texture => {
       			texture.encoding = THREE.sRGBEncoding;
       			texture.mapping = THREE.EquirectangularReflectionMapping;
-      			texture.anisotropy = resolution.includes('1024') ? 4 : renderer.capabilities.getMaxAnisotropy();
+      			texture.anisotropy = resolution.includes('2048') ? 4 : renderer.capabilities.getMaxAnisotropy();
       			scene.background = texture;
 
             const target1 = makeCubeRenderTarget(2, false);
@@ -219,12 +212,12 @@
 
       			setTimeout(render, 600);
 
-      			setTimeout(() => mainContainer.style.opacity = '0', 1000);
+      			setTimeout(() => mainContainer.style.opacity = '0', 900);
       			setTimeout(() => {
       				mainContainer.style.display = 'none';
       				stats = new Stats();
       				statsInfo.append(stats.dom);
-      			}, 2100);
+      			}, 2000);
       		});
       	};
 
@@ -238,14 +231,14 @@
       	controls.dampingFactor = .1;
 
       	const makeCubeRenderTarget = (far, updateNeeded) => {
-      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('1024') ? 256 : 1024, {
+      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('2048') ? 256 : 1024, {
       			format: THREE.RGBFormat,
       			generateMipmaps: true,
-      			minFilter: resolution.includes('1024') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
+      			minFilter: resolution.includes('2048') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
       			encoding: THREE.sRGBEncoding,
       		});
 
-      		cubeRenderTarget.texture.anisotropy = resolution.includes('1024') ? 4 : renderer.capabilities.getMaxAnisotropy();
+      		cubeRenderTarget.texture.anisotropy = resolution.includes('2048') ? 4 : renderer.capabilities.getMaxAnisotropy();
       		const camera = new THREE.CubeCamera(1, far, cubeRenderTarget);
           if (updateNeeded) {
             cubeCamera = camera;

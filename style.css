@@ -40,7 +40,7 @@ body {
 #select-resolution-container {
   position: absolute;
   margin: 0;
-  width: 50%;
+  width: 75%;
   max-width: 550px;
   top: 50%;
   left: 50%;
@@ -66,12 +66,12 @@ body {
 .resolution-selection-button {
   width: calc(100% - 6px);
   min-width: 90px;
-  height: 27px;
-  padding-top: 3px;
+  height: auto;
+  padding: 6px 4px;
   background: transparent;
   border: 3px solid #0b3024;
   position: relative;
-  margin: 10px 0 0 0;
+  margin: 12px 0 0 0;
   border-radius: 20px;
   color: #d2eed5;
   font-size: 18px;
@@ -92,7 +92,7 @@ body {
   margin: 0;
   width: 50%;
   min-width: 140px;
-  max-width: 550px;
+  max-width: 450px;
   height: 300px;
   top: 50%;
   left: 50%;
@@ -116,7 +116,7 @@ body {
   color: #d2eed5;
   user-select: none;
   cursor: pointer;
-  padding: 2px;
+  padding: 4px 2px;
   transition: background-color 200ms ease-out;
 }
 
@@ -130,7 +130,7 @@ body {
 
 #backgroundInfo {
   position: absolute;
-  width: 200px;
+  width: 240px;
   height: auto;
   font-size: 16px;
   margin: 0;
@@ -138,7 +138,8 @@ body {
   text-align: center;
   color: #56b185;
   text-shadow: 1px 1px 1px #156840;
-  left: calc(50% - 100px);
+  left: 50%;
+  transform: translateX(-50%);
   top: 5px;
   background: transparent;
 }
@@ -206,61 +207,95 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  #resolution-select-text {
-    font-size: 16px;
-  }
-
-  #background-select-text {
+  #background-select-text, #resolution-select-text {
     font-size: 18px;
   }
 
   .resolution-selection-button {
-    padding-top: 5px;
-    height: 25px;
     font-size: 14px;
   }
 
   .background-selection-button {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 
-@media screen and (max-width: 445px) {
-  #resolution-select-text {
+@media screen and (max-width: 500px) {
+  #backgroundInfo {
     font-size: 13px;
+    width: 190px;
   }
 
+  .background-selection-button {
+    font-size: 12px;
+  }
+
+  #background-select-text, #resolution-select-text {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 425px) {
   .resolution-selection-button {
-    padding-top: 7px;
-    height: 23px;
     font-size: 11px;
   }
 
   .background-selection-button {
-    font-size: 11px;
-    padding-top: 3px;
-    height: 17px;
+    font-size: 10px;
   }
 
-  #background-select-text {
-    font-size: 13px;
+  #background-select-text, #resolution-select-text {
+    font-size: 14px;
   }
+
+  #backgroundInfo {
+    font-size: 11px;
+    width: 170px;
+    left: calc(50% + 40px);
+  }   
 }
 
-@media screen and (max-width: 365px) {
-  #backgroundInfo {
-    font-size: 10px;
-    width: 160px;
-    left: calc(50% - 80px);
+@media screen and (max-width: 345px) {
+  .resolution-selection-button {
+    font-size: 9px;
   }
 
   .background-selection-button {
     font-size: 8px;
-    padding-top: 6px;
-    height: 14px;
   }
 
-  #background-select-text {
+  #background-select-text, #resolution-select-text {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 260px) {
+  #backgroundInfo {
+    font-size: 9px;
+    width: 140px;
+  }  
+}
+
+@media screen and (max-height: 400px) {
+  #background-selection-container {
+    height: 200px;
+  }
+}
+
+@media screen and (max-height: 250px) {
+  #background-selection-container {
+    height: 120px;
+  }
+
+  .resolution-selection-button {
+    font-size: 11px;
+  }
+
+  .background-selection-button {
     font-size: 10px;
   }
+
+  #background-select-text, #resolution-select-text {
+    font-size: 14px;
+  }  
 }
