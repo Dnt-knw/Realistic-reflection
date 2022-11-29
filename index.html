@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Realistic reflection...</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <!--
       First, choose background resolution. I recommend you 8K, if it won't work or is very slow,
@@ -16,28 +16,28 @@
 
     <!--
 
-	  ⁉️
+    ⁉️
 
-	  How to use
+    How to use
 
-	  On PC:
-	  hold down left mouse button to rotate this scene;
-	  use mouse wheel to change distance to this scene.
+    On PC:
+    hold down left mouse button to rotate this scene;
+    use mouse wheel to change distance to this scene.
 
-	  On Mobile:
-	  Use 1 finger to rotate this scene;
-	  Use 2 fingers to bring closer/move away from this scene.
+    On Mobile:
+    Use 1 finger to rotate this scene;
+    Use 2 fingers to bring closer/move away from this scene.
 
-	  ⁉️
+    ⁉️
 
     -->
 
     <!--
-	  And as always, if you like my code, then upvote please 😊
+    And as always, if you like my code, then upvote please 😊
     -->
 
     <!--
-	  Author: ★ Don’t Know ★
+    Author: ★ Don’t Know ★
     -->
 
   </head>
@@ -83,222 +83,223 @@
     </div>
     <script type="module">
 
-      import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
-      import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
-      import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/libs/stats.module.js';
+    import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
+    import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
+    import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/libs/stats.module.js';
 
-      const main = () => {
-      	const backgroundSelectionContainer = document.getElementById('background-selection-container');
-      	const selectResolutionContainer = document.getElementById('select-resolution-container');
-      	const mainContainer = document.getElementById('main-container');
-      	const loadingContainer = document.getElementById('loading-container');
+    onload = setTimeout(main, 250);
 
-      	const resolutionSelectionButtons = document.querySelectorAll('.resolution-selection-button');
-      	const backgroundSelectionButton = document.querySelectorAll('.background-selection-button');
+    function main() {
+      const backgroundSelectionContainer = document.getElementById('background-selection-container');
+      const selectResolutionContainer = document.getElementById('select-resolution-container');
+      const mainContainer = document.getElementById('main-container');
+      const loadingContainer = document.getElementById('loading-container');
 
-      	const backgroundInfo = document.getElementById('backgroundInfo');
-      	const loadingCircles = document.querySelectorAll('.circle');
+      const resolutionSelectionButtons = document.querySelectorAll('.resolution-selection-button');
+      const backgroundSelectionButton = document.querySelectorAll('.background-selection-button');
 
-      	let resolution = null;
+      const backgroundInfo = document.getElementById('backgroundInfo');
+      const loadingCircles = document.querySelectorAll('.circle');
 
-      	resolutionSelectionButtons.forEach(button => {
-      		button.onclick = e => {
-      			resolution = e.currentTarget.children[0].textContent;
-      			selectResolutionContainer.style.display = 'none';
-      			backgroundSelectionContainer.style.display = 'block';
-      		};
-      	});
+      let resolution = null;
 
-      	const backgroundNames = ['ballroom', 'blaubeuren_church_square', 'kloppenheim',
-      		'modern_buildings_night', 'portland_landing_pad', 'rathaus', 'white_cliff_top',
-      		'spiaggia_di_mondello', 'blue_lagoon_night', 'lythwood_terrace', 'glass_passage', 
-          'adams_place_bridge', 'hilly_terrain', 'rooftop_night', 'vignaioli_night',
-      	];
+      resolutionSelectionButtons.forEach(button => {
+        button.onclick = e => {
+          resolution = e.currentTarget.children[0].textContent;
+          selectResolutionContainer.style.display = 'none';
+          backgroundSelectionContainer.style.display = 'block';
+        };
+      });
 
-        const authors = ['Sergej Majboroda', 'Andreas Mischok', 'Greg Zaal', 'Greg Zaal', 'Philip Modin', 'Greg Zaal', 'Greg Zaal',
-        'Andreas Mischok', 'Greg Zaal', 'Greg Zaal', 'Greg Zaal', 'Andreas Mischok', 'Sergej Majboroda', 'Greg Zaal', 'Greg Zaal'];
+      const backgroundNames = ['ballroom', 'blaubeuren_church_square', 'kloppenheim',
+        'modern_buildings_night', 'portland_landing_pad', 'rathaus', 'white_cliff_top',
+        'spiaggia_di_mondello', 'blue_lagoon_night', 'lythwood_terrace', 'glass_passage',
+        'adams_place_bridge', 'hilly_terrain', 'rooftop_night', 'vignaioli_night',
+      ];
 
-      	let counter = 0,
-      		n;
+      const authors = ['Sergej Majboroda', 'Andreas Mischok', 'Greg Zaal', 'Greg Zaal', 'Philip Modin', 'Greg Zaal', 'Greg Zaal',
+        'Andreas Mischok', 'Greg Zaal', 'Greg Zaal', 'Greg Zaal', 'Andreas Mischok', 'Sergej Majboroda', 'Greg Zaal', 'Greg Zaal'
+      ];
 
-      	const timer = setInterval(() => {
-      		counter === 20 ? clearInterval(timer) : counter++;
-      		n = Math.floor(Math.random() * backgroundNames.length);
-      	}, 20);
+      let counter = 0,
+        n;
 
-      	backgroundSelectionButton.forEach(button => {
-      		button.onclick = e => {
-      			backgroundSelectionContainer.style.display = 'none';
-      			loadingContainer.style.display = 'block';
+      const timer = setInterval(() => {
+        counter === 20 ? clearInterval(timer) : counter++;
+        n = Math.floor(Math.random() * backgroundNames.length);
+      }, 20);
 
-      			let ms = 0;
-      			loadingCircles.forEach(c => setTimeout(() => c.classList.add('run-loading-animation'), ms += 200));
+      backgroundSelectionButton.forEach(button => {
+        button.onclick = e => {
+          backgroundSelectionContainer.style.display = 'none';
+          loadingContainer.style.display = 'block';
 
-      			if (e.currentTarget.textContent in urls) {
-      				setupScene(resolution.includes('2048') ? urls[`${e.currentTarget.textContent}`][0] : urls[`${e.currentTarget.textContent}`][1]);
-      				backgroundInfo.textContent = `${e.currentTarget.textContent} by ${authors[backgroundNames.findIndex(item => item === e.currentTarget.textContent)]} ${resolution}`;
-      			} else {
-      				setupScene(resolution.includes('2048') ? urls[`${backgroundNames[n]}`][0] : urls[`${backgroundNames[n]}`][1]);
-      				backgroundInfo.textContent = `${backgroundNames[n]} by ${authors[n]} ${resolution}`;
-      			}
-      		};
-      	});
+          let ms = 0;
+          loadingCircles.forEach(c => setTimeout(() => c.classList.add('run-loading-animation'), ms += 200));
 
-      	const canvas = document.getElementById('c');
-      	const statsInfo = document.getElementById('statsInfo');
-
-      	const w = window.innerWidth;
-      	const h = window.innerHeight;
-
-      	const renderer = new THREE.WebGLRenderer({
-      		canvas,
-      		antialias: true,
-      	});
-      	renderer.setSize(w, h);
-      	renderer.setPixelRatio(window.devicePixelRatio);
-      	renderer.outputEncoding = THREE.sRGBEncoding;
-
-      	const fov = 60;
-      	const aspect = w / h;
-      	const near = 0.1;
-      	const far = 1850;
-
-      	const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-      	camera.position.set(0, 0, 100);
-
-      	const urls = {
-      		ballroom: ['https://dl.dropbox.com/s/uwqtvo75ewpm2o4/ballroom_4K.jpg', 'https://dl.dropbox.com/s/f0zj9xig0oispww/ballroom_8K.jpg'],
-      		blaubeuren_church_square: ['https://dl.dropbox.com/s/anzcczaj23cka3v/blaubeuren_church_square_4K.jpg', 'https://dl.dropbox.com/s/quqwigajksl6gmt/blaubeuren_church_square_8K.jpg'],
-      		kloppenheim: ['https://dl.dropbox.com/s/7x1ge3m1zw0jgxz/kloppenheim_02_4K.jpg', 'https://dl.dropbox.com/s/e9nxwdpcwxuah7j/kloppenheim_02_8K.jpg'],
-      		modern_buildings_night: ['https://dl.dropbox.com/s/phpo7m9loko7lat/modern_buildings_night_4K.jpg', 'https://dl.dropbox.com/s/lm0udknkj4xtowb/modern_buildings_night_8K.jpg'],
-      		portland_landing_pad: ['https://dl.dropbox.com/s/3cy8bw2gp8w36au/portland_landing_pad_4K.jpg', 'https://dl.dropbox.com/s/2pu25vjdi2374nz/portland_landing_pad_8K.jpg'],
-      		rathaus: ['https://dl.dropbox.com/s/8jm0tam0amtah0g/rathaus_4K.jpg', 'https://dl.dropbox.com/s/csfnw7zu0t3nb2y/rathaus_8K.jpg'],
-      		white_cliff_top: ['https://dl.dropbox.com/s/12lrwjhsv2vt9c2/white_cliff_top_4K.jpg', 'https://dl.dropbox.com/s/dt93b44c94w0ro6/white_cliff_top_8K.jpg'],
-      		spiaggia_di_mondello: ['https://dl.dropbox.com/s/61bsf6aenulcmc9/spiaggia_di_mondello_4K.jpg', 'https://dl.dropbox.com/s/up49k2pkxbnvkdi/spiaggia_di_mondello_8K.jpg'],
-      		blue_lagoon_night: ['https://dl.dropbox.com/s/f0df1ph7mqf2ns0/blue_lagoon_night_4K.jpg', 'https://dl.dropbox.com/s/h0r0y3kr5iubxbi/blue_lagoon_night_8K.jpg'],
-      		lythwood_terrace: ['https://dl.dropbox.com/s/g7u6fr5me1pdwb5/lythwood_terrace_4K.jpg', 'https://dl.dropbox.com/s/hcclrbilfkpoz2t/lythwood_terrace_8K.jpg'],
-      		glass_passage: ['https://dl.dropbox.com/s/th8f1gxjitw7kzf/glass_passage_4K.jpg', 'https://dl.dropbox.com/s/nq55pbvm962llgq/glass_passage_8K.jpg'],
-      		adams_place_bridge: ['https://dl.dropbox.com/s/4ezg3iicbhqnyqu/adams_place_bridge_4K.jpg', 'https://dl.dropbox.com/s/jdpg4usepmpud89/adams_place_bridge_8K.jpg'],
-      		hilly_terrain: ['https://dl.dropbox.com/s/86l7coqrrpy2thn/hilly_terrain_01_4K.jpg', 'https://dl.dropbox.com/s/j6lcu6a3a3kh5i5/hilly_terrain_01_8K.jpg'],
-          rooftop_night: ['https://dl.dropbox.com/s/nt7iuz4fyoogvic/rooftop_night_4K.jpg', 'https://dl.dropbox.com/s/dwqac68wx49w0fq/rooftop_night_8K.jpg'],
-          vignaioli_night: ['https://dl.dropbox.com/s/et62qyaq54gh5o0/vignaioli_night_4K.jpg', 'https://dl.dropbox.com/s/rxw0c6t76agjlnk/vignaioli_night_8K.jpg'],
-      	};
-
-      	const meshes = [];
-        let cubeCamera = null;
-      	const scene = new THREE.Scene();
-
-      	const setupScene = url => {
-      		new THREE.TextureLoader().load(url, texture => {
-      			texture.encoding = THREE.sRGBEncoding;
-      			texture.mapping = THREE.EquirectangularReflectionMapping;
-      			texture.anisotropy = resolution.includes('2048') ? 4 : renderer.capabilities.getMaxAnisotropy();
-      			scene.background = texture;
-
-            const target1 = makeCubeRenderTarget(2, false);
-            const target2 = makeCubeRenderTarget(1000, true);
-
-      			setTimeout(() => {
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 100, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, -100, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 100, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, -100, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 0, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 0, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, 100, true, target1);
-      				makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, -100, true, target1);
-      				makeMesh(new THREE.IcosahedronGeometry(50, 12), 0, 0, 0, false, target2);
-      			}, 300)
-
-      			setTimeout(render, 600);
-
-      			setTimeout(() => mainContainer.style.opacity = '0', 900);
-      			setTimeout(() => {
-      				mainContainer.style.display = 'none';
-      				stats = new Stats();
-      				statsInfo.append(stats.dom);
-      			}, 2000);
-      		});
-      	};
-
-      	const controls = new OrbitControls(camera, canvas);
-      	controls.target.set(0, 0, 0);
-      	controls.update();
-      	controls.enablePan = false;
-      	controls.minDistance = 100;
-      	controls.maxDistance = 750;
-      	controls.enableDamping = true;
-      	controls.dampingFactor = .1;
-
-      	const makeCubeRenderTarget = (far, updateNeeded) => {
-      		const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('2048') ? 256 : 1024, {
-      			format: THREE.RGBFormat,
-      			generateMipmaps: true,
-      			minFilter: resolution.includes('2048') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
-      			encoding: THREE.sRGBEncoding,
-      		});
-
-      		cubeRenderTarget.texture.anisotropy = resolution.includes('2048') ? 4 : renderer.capabilities.getMaxAnisotropy();
-      		const camera = new THREE.CubeCamera(1, far, cubeRenderTarget);
-          if (updateNeeded) {
-            cubeCamera = camera;
+          if (e.currentTarget.textContent in urls) {
+            setupScene(resolution.includes('2048') ? urls[`${e.currentTarget.textContent}`][0] : urls[`${e.currentTarget.textContent}`][1]);
+            backgroundInfo.textContent = `${e.currentTarget.textContent} by ${authors[backgroundNames.findIndex(item => item === e.currentTarget.textContent)]} ${resolution}`;
           } else {
-            setTimeout(() => camera.update(renderer, scene), 150);
+            setupScene(resolution.includes('2048') ? urls[`${backgroundNames[n]}`][0] : urls[`${backgroundNames[n]}`][1]);
+            backgroundInfo.textContent = `${backgroundNames[n]} by ${authors[n]} ${resolution}`;
           }
+        };
+      });
 
-      		return cubeRenderTarget;
-      	}
+      const canvas = document.getElementById('c');
+      const statsInfo = document.getElementById('statsInfo');
 
-      	const makeMesh = (geo, x = 0, y = 0, z = 0, addToArray, cubeRenderTarget) => {
-      		const material = new THREE.MeshBasicMaterial({
-      			envMap: cubeRenderTarget.texture,
-      			combine: THREE.MultiplyOperation,
-      			reflectivity: 1,
-      		});
+      const w = window.innerWidth;
+      const h = window.innerHeight;
 
-      		const mesh = new THREE.Mesh(geo, material);
-      		scene.add(mesh);
-      		mesh.position.set(x, y, z);
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+      });
+      renderer.setSize(w, h);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.outputEncoding = THREE.sRGBEncoding;
 
-      		addToArray ? meshes.push(mesh) : null;
+      const fov = 60;
+      const aspect = w / h;
+      const near = 0.1;
+      const far = 1850;
 
-      		return mesh;
-      	};
+      const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+      camera.position.set(0, 0, 100);
 
-      	const onWindowResize = () => {
-      		renderer.setSize(window.innerWidth, window.innerHeight);
-      		camera.aspect = window.innerWidth / window.innerHeight;
-      		camera.updateProjectionMatrix();
-      	};
-
-      	window.addEventListener('resize', onWindowResize, false);
-
-      	let stats = new Stats();
-
-      	function render() {
-      		let a = 0;
-
-      		meshes.forEach((mesh, idx) => {
-      			mesh.rotation.x += idx * 0.006 || 0.006;
-      			mesh.rotation.y += idx * 0.005 || 0.005;
-      			mesh.rotation.z += idx * 0.004 || 0.004;
-
-      			const time = Date.now();
-
-      			mesh.position.x = Math.tan(time * 0.0012 + a) * 45;
-      			a += 10;
-      		});
-
-          cubeCamera.update(renderer, scene);
-
-      		stats.update();
-      		controls.update();
-      		renderer.render(scene, camera);
-      		requestAnimationFrame(render);
-      	}
+      const urls = {
+        ballroom: ['https://dl.dropbox.com/s/uwqtvo75ewpm2o4/ballroom_4K.jpg', 'https://dl.dropbox.com/s/f0zj9xig0oispww/ballroom_8K.jpg'],
+        blaubeuren_church_square: ['https://dl.dropbox.com/s/anzcczaj23cka3v/blaubeuren_church_square_4K.jpg', 'https://dl.dropbox.com/s/quqwigajksl6gmt/blaubeuren_church_square_8K.jpg'],
+        kloppenheim: ['https://dl.dropbox.com/s/7x1ge3m1zw0jgxz/kloppenheim_02_4K.jpg', 'https://dl.dropbox.com/s/e9nxwdpcwxuah7j/kloppenheim_02_8K.jpg'],
+        modern_buildings_night: ['https://dl.dropbox.com/s/phpo7m9loko7lat/modern_buildings_night_4K.jpg', 'https://dl.dropbox.com/s/lm0udknkj4xtowb/modern_buildings_night_8K.jpg'],
+        portland_landing_pad: ['https://dl.dropbox.com/s/3cy8bw2gp8w36au/portland_landing_pad_4K.jpg', 'https://dl.dropbox.com/s/2pu25vjdi2374nz/portland_landing_pad_8K.jpg'],
+        rathaus: ['https://dl.dropbox.com/s/8jm0tam0amtah0g/rathaus_4K.jpg', 'https://dl.dropbox.com/s/csfnw7zu0t3nb2y/rathaus_8K.jpg'],
+        white_cliff_top: ['https://dl.dropbox.com/s/12lrwjhsv2vt9c2/white_cliff_top_4K.jpg', 'https://dl.dropbox.com/s/dt93b44c94w0ro6/white_cliff_top_8K.jpg'],
+        spiaggia_di_mondello: ['https://dl.dropbox.com/s/61bsf6aenulcmc9/spiaggia_di_mondello_4K.jpg', 'https://dl.dropbox.com/s/up49k2pkxbnvkdi/spiaggia_di_mondello_8K.jpg'],
+        blue_lagoon_night: ['https://dl.dropbox.com/s/f0df1ph7mqf2ns0/blue_lagoon_night_4K.jpg', 'https://dl.dropbox.com/s/h0r0y3kr5iubxbi/blue_lagoon_night_8K.jpg'],
+        lythwood_terrace: ['https://dl.dropbox.com/s/g7u6fr5me1pdwb5/lythwood_terrace_4K.jpg', 'https://dl.dropbox.com/s/hcclrbilfkpoz2t/lythwood_terrace_8K.jpg'],
+        glass_passage: ['https://dl.dropbox.com/s/th8f1gxjitw7kzf/glass_passage_4K.jpg', 'https://dl.dropbox.com/s/nq55pbvm962llgq/glass_passage_8K.jpg'],
+        adams_place_bridge: ['https://dl.dropbox.com/s/4ezg3iicbhqnyqu/adams_place_bridge_4K.jpg', 'https://dl.dropbox.com/s/jdpg4usepmpud89/adams_place_bridge_8K.jpg'],
+        hilly_terrain: ['https://dl.dropbox.com/s/86l7coqrrpy2thn/hilly_terrain_01_4K.jpg', 'https://dl.dropbox.com/s/j6lcu6a3a3kh5i5/hilly_terrain_01_8K.jpg'],
+        rooftop_night: ['https://dl.dropbox.com/s/nt7iuz4fyoogvic/rooftop_night_4K.jpg', 'https://dl.dropbox.com/s/dwqac68wx49w0fq/rooftop_night_8K.jpg'],
+        vignaioli_night: ['https://dl.dropbox.com/s/et62qyaq54gh5o0/vignaioli_night_4K.jpg', 'https://dl.dropbox.com/s/rxw0c6t76agjlnk/vignaioli_night_8K.jpg'],
       };
 
-      onload = setTimeout(main, 250);
+      const meshes = [];
+      let cubeCamera = null;
+      const scene = new THREE.Scene();
+
+      const setupScene = url => {
+        new THREE.TextureLoader().load(url, texture => {
+          texture.encoding = THREE.sRGBEncoding;
+          texture.mapping = THREE.EquirectangularReflectionMapping;
+          texture.anisotropy = resolution.includes('2048') ? 4 : renderer.capabilities.getMaxAnisotropy();
+          scene.background = texture;
+
+          const target1 = makeCubeRenderTarget(2, false);
+          const target2 = makeCubeRenderTarget(1000, true);
+
+          setTimeout(() => {
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 100, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, -100, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 100, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, -100, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 100, 0, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, -100, 0, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, 100, true, target1);
+            makeMesh(new THREE.BoxBufferGeometry(50, 50, 50), 0, 0, -100, true, target1);
+            makeMesh(new THREE.IcosahedronGeometry(50, 12), 0, 0, 0, false, target2);
+          }, 300)
+
+          setTimeout(render, 600);
+
+          setTimeout(() => mainContainer.style.opacity = '0', 900);
+          setTimeout(() => {
+            mainContainer.style.display = 'none';
+            stats = new Stats();
+            statsInfo.append(stats.dom);
+          }, 2000);
+        });
+      };
+
+      const controls = new OrbitControls(camera, canvas);
+      controls.target.set(0, 0, 0);
+      controls.update();
+      controls.enablePan = false;
+      controls.minDistance = 100;
+      controls.maxDistance = 750;
+      controls.enableDamping = true;
+      controls.dampingFactor = .1;
+
+      const makeCubeRenderTarget = (far, updateNeeded) => {
+        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(resolution.includes('2048') ? 256 : 1024, {
+          format: THREE.RGBFormat,
+          generateMipmaps: true,
+          minFilter: resolution.includes('2048') ? THREE.NearestMipMapNearestFilter : THREE.LinearMipMapLinearFilter,
+          encoding: THREE.sRGBEncoding,
+        });
+
+        cubeRenderTarget.texture.anisotropy = resolution.includes('2048') ? 4 : renderer.capabilities.getMaxAnisotropy();
+        const camera = new THREE.CubeCamera(1, far, cubeRenderTarget);
+        if (updateNeeded) {
+          cubeCamera = camera;
+        } else {
+          setTimeout(() => camera.update(renderer, scene), 150);
+        }
+
+        return cubeRenderTarget;
+      }
+
+      const makeMesh = (geo, x = 0, y = 0, z = 0, addToArray, cubeRenderTarget) => {
+        const material = new THREE.MeshBasicMaterial({
+          envMap: cubeRenderTarget.texture,
+          combine: THREE.MultiplyOperation,
+          reflectivity: 1,
+        });
+
+        const mesh = new THREE.Mesh(geo, material);
+        scene.add(mesh);
+        mesh.position.set(x, y, z);
+
+        addToArray ? meshes.push(mesh) : null;
+
+        return mesh;
+      };
+
+      const onWindowResize = () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+      };
+
+      window.addEventListener('resize', onWindowResize, false);
+
+      let stats = new Stats();
+
+      function render() {
+        let a = 0;
+
+        meshes.forEach((mesh, idx) => {
+          mesh.rotation.x += idx * 0.006 || 0.006;
+          mesh.rotation.y += idx * 0.005 || 0.005;
+          mesh.rotation.z += idx * 0.004 || 0.004;
+
+          const time = Date.now();
+
+          mesh.position.x = Math.tan(time * 0.0012 + a) * 45;
+          a += 10;
+        });
+
+        cubeCamera.update(renderer, scene);
+
+        stats.update();
+        controls.update();
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+      }
+    }
 
     </script>
   </body>
