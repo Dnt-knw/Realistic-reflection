@@ -101,12 +101,15 @@
       const backgroundInfo = document.getElementById('backgroundInfo');
       const loadingCircles = document.querySelectorAll('.circle');
 
+      selectResolutionContainer.style.visibility = 'visible';
+      selectResolutionContainer.style.opacity = '1';
+
       let resolution = null;
 
       resolutionSelectionButtons.forEach(button => {
         button.onclick = e => {
           resolution = e.currentTarget.children[0].textContent;
-          selectResolutionContainer.style.display = 'none';
+          selectResolutionContainer.remove();
           backgroundSelectionContainer.style.display = 'block';
         };
       });
@@ -131,7 +134,7 @@
 
       backgroundSelectionButton.forEach(button => {
         button.onclick = e => {
-          backgroundSelectionContainer.style.display = 'none';
+          backgroundSelectionContainer.remove();
           loadingContainer.style.display = 'block';
 
           let ms = 0;
@@ -217,7 +220,7 @@
 
           setTimeout(() => mainContainer.style.opacity = '0', 900);
           setTimeout(() => {
-            mainContainer.style.display = 'none';
+            mainContainer.remove();
             stats = new Stats();
             statsInfo.append(stats.dom);
           }, 2000);

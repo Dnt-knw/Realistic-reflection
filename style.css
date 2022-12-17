@@ -47,6 +47,9 @@ body {
   transform: translate(-50%, -50%);
   background: transparent;
   text-shadow: 1px 1px 3px #d2eed5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease-out;
 }
 
 #resolution-select-text,
