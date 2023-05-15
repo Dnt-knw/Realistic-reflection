@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <title>Realistic reflection</title>
-    <link rel="icon" href="https://dl.dropbox.com/s/670ddi7t5ppkyco/reflection.png" />
+    <link rel="icon" href="./reflection.png" />
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
@@ -104,7 +104,7 @@
           loadingContainer.style.display = 'block';
 
           let ms = 0;
-          loadingCircles.forEach(c => setTimeout(() => c.classList.add('run-loading-animation'), ms += 200));
+          loadingCircles.forEach(c => setTimeout(() => c.classList.add('run-loading-animation'), ms += 100));
 
           if (e.currentTarget.textContent in urls) {
             setupScene(resolution.includes('2048') ? urls[`${e.currentTarget.textContent}`][0] : urls[`${e.currentTarget.textContent}`][1]);
@@ -139,21 +139,21 @@
       camera.position.set(0, 0, 100);
 
       const urls = {
-        ballroom: ['https://dl.dropbox.com/s/uwqtvo75ewpm2o4/ballroom_4K.jpg', 'https://dl.dropbox.com/s/f0zj9xig0oispww/ballroom_8K.jpg'],
-        blaubeuren_church_square: ['https://dl.dropbox.com/s/anzcczaj23cka3v/blaubeuren_church_square_4K.jpg', 'https://dl.dropbox.com/s/quqwigajksl6gmt/blaubeuren_church_square_8K.jpg'],
-        kloppenheim: ['https://dl.dropbox.com/s/7x1ge3m1zw0jgxz/kloppenheim_02_4K.jpg', 'https://dl.dropbox.com/s/e9nxwdpcwxuah7j/kloppenheim_02_8K.jpg'],
-        modern_buildings_night: ['https://dl.dropbox.com/s/phpo7m9loko7lat/modern_buildings_night_4K.jpg', 'https://dl.dropbox.com/s/lm0udknkj4xtowb/modern_buildings_night_8K.jpg'],
-        portland_landing_pad: ['https://dl.dropbox.com/s/3cy8bw2gp8w36au/portland_landing_pad_4K.jpg', 'https://dl.dropbox.com/s/2pu25vjdi2374nz/portland_landing_pad_8K.jpg'],
-        rathaus: ['https://dl.dropbox.com/s/8jm0tam0amtah0g/rathaus_4K.jpg', 'https://dl.dropbox.com/s/csfnw7zu0t3nb2y/rathaus_8K.jpg'],
-        white_cliff_top: ['https://dl.dropbox.com/s/12lrwjhsv2vt9c2/white_cliff_top_4K.jpg', 'https://dl.dropbox.com/s/dt93b44c94w0ro6/white_cliff_top_8K.jpg'],
-        spiaggia_di_mondello: ['https://dl.dropbox.com/s/61bsf6aenulcmc9/spiaggia_di_mondello_4K.jpg', 'https://dl.dropbox.com/s/up49k2pkxbnvkdi/spiaggia_di_mondello_8K.jpg'],
-        blue_lagoon_night: ['https://dl.dropbox.com/s/f0df1ph7mqf2ns0/blue_lagoon_night_4K.jpg', 'https://dl.dropbox.com/s/h0r0y3kr5iubxbi/blue_lagoon_night_8K.jpg'],
-        lythwood_terrace: ['https://dl.dropbox.com/s/g7u6fr5me1pdwb5/lythwood_terrace_4K.jpg', 'https://dl.dropbox.com/s/hcclrbilfkpoz2t/lythwood_terrace_8K.jpg'],
-        glass_passage: ['https://dl.dropbox.com/s/th8f1gxjitw7kzf/glass_passage_4K.jpg', 'https://dl.dropbox.com/s/nq55pbvm962llgq/glass_passage_8K.jpg'],
-        adams_place_bridge: ['https://dl.dropbox.com/s/4ezg3iicbhqnyqu/adams_place_bridge_4K.jpg', 'https://dl.dropbox.com/s/jdpg4usepmpud89/adams_place_bridge_8K.jpg'],
-        hilly_terrain: ['https://dl.dropbox.com/s/86l7coqrrpy2thn/hilly_terrain_01_4K.jpg', 'https://dl.dropbox.com/s/j6lcu6a3a3kh5i5/hilly_terrain_01_8K.jpg'],
-        rooftop_night: ['https://dl.dropbox.com/s/nt7iuz4fyoogvic/rooftop_night_4K.jpg', 'https://dl.dropbox.com/s/dwqac68wx49w0fq/rooftop_night_8K.jpg'],
-        vignaioli_night: ['https://dl.dropbox.com/s/et62qyaq54gh5o0/vignaioli_night_4K.jpg', 'https://dl.dropbox.com/s/rxw0c6t76agjlnk/vignaioli_night_8K.jpg'],
+        ballroom: ['./assets/ballroom/ballroom_4K.jpg', './assets/ballroom/ballroom_8K.jpg'],
+        blaubeuren_church_square: ['./assets/blaubeuren_church_square/blaubeuren_church_square_4K.jpg', './assets/blaubeuren_church_square/blaubeuren_church_square_8K.jpg'],
+        kloppenheim: ['./assets/kloppenheim/kloppenheim_02_4K.jpg', './assets/kloppenheim/kloppenheim_02_8K.jpg'],
+        modern_buildings_night: ['./assets/modern_buildings_night/modern_buildings_night_4K.jpg', './assets/modern_buildings_night/modern_buildings_night_8K.jpg'],
+        portland_landing_pad: ['./assets/portland_landing_pad/portland_landing_pad_4K.jpg', './assets/portland_landing_pad/portland_landing_pad_8K.jpg'],
+        rathaus: ['./assets/rathaus/rathaus_4K.jpg', './assets/rathaus/rathaus_8K.jpg'],
+        white_cliff_top: ['./assets/white_cliff_top/white_cliff_top_4K.jpg', './assets/white_cliff_top/white_cliff_top_8K.jpg'],
+        spiaggia_di_mondello: ['./assets/spiaggia_di_mondello/spiaggia_di_mondello_4K.jpg', './assets/spiaggia_di_mondello/spiaggia_di_mondello_8K.jpg'],
+        blue_lagoon_night: ['./assets/blue_lagoon_night/blue_lagoon_night_4K.jpg', './assets/blue_lagoon_night/blue_lagoon_night_8K.jpg'],
+        lythwood_terrace: ['./assets/lythwood_terrace/lythwood_terrace_4K.jpg', './assets/lythwood_terrace/lythwood_terrace_8K.jpg'],
+        glass_passage: ['./assets/glass_passage/glass_passage_4K.jpg', './assets/glass_passage/glass_passage_8K.jpg'],
+        adams_place_bridge: ['./assets/adams_place_bridge/adams_place_bridge_4K.jpg', './assets/adams_place_bridge/adams_place_bridge_8K.jpg'],
+        hilly_terrain: ['./assets/hilly_terrain/hilly_terrain_01_4K.jpg', './assets/hilly_terrain/hilly_terrain_01_8K.jpg'],
+        rooftop_night: ['./assets/rooftop_night/rooftop_night_4K.jpg', './assets/rooftop_night/rooftop_night_8K.jpg'],
+        vignaioli_night: ['./assets/vignaioli_night/vignaioli_night_4K.jpg', './assets/vignaioli_night/vignaioli_night_8K.jpg'],
       };
 
       const meshes = [];
